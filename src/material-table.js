@@ -1178,11 +1178,10 @@ var style = () => ({
       "-webkit-appearance": "none",
     },
     "& ::-webkit-scrollbar:horizontal": {
-      height: 8,
+      height: 6,
     },
     "& ::-webkit-scrollbar-thumb": {
       borderRadius: 4,
-      border: "2px solid white",
       backgroundColor: "rgba(0, 0, 0, .3)",
     },
   },
