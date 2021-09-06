@@ -35,7 +35,7 @@ class MTableEditField extends React.Component {
     return (
       <Autocomplete
         autoComplete
-        value={this.props.value === undefined ? options[0] : this.props.value}
+        value={this.props.value}
         onChange={(event, value) => {
           this.props.onChange(value);
         }}
@@ -43,7 +43,12 @@ class MTableEditField extends React.Component {
         getOptionLabel={(option) => this.props.columnDef.lookup[option]}
         fullWidth
         renderInput={(params) => {
-          return <TextField {...params} label={this.props.columnDef.title} />;
+          return (
+            <TextField
+              {...params}
+              placeholder={this.props.columnDef.editPlaceholder}
+            />
+          );
         }}
       />
     );

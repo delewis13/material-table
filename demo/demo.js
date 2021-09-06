@@ -435,6 +435,10 @@ class App extends Component {
         field: "ok",
         lookup: { key1: "a", key2: "b", key3: "c" },
       },
+      {
+        title: "string data",
+        field: "data",
+      },
       // {
       //   title: "Soyadı",
       //   field: "surname",
