@@ -1,8 +1,6 @@
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -14,6 +12,7 @@ import {
   DatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
 
 class MTableEditField extends React.Component {
@@ -31,26 +30,22 @@ class MTableEditField extends React.Component {
   }
 
   renderLookupField() {
-    const { helperText, error, ...props } = this.getProps();
+    const options = Object.keys(this.props.columnDef.lookup);
+
     return (
-      <FormControl error={Boolean(error)}>
-        <Select
-          {...props}
-          value={this.props.value === undefined ? "" : this.props.value}
-          onChange={(event) => this.props.onChange(event.target.value)}
-          style={{
-            fontSize: 13,
-          }}
-          SelectDisplayProps={{ "aria-label": this.props.columnDef.title }}
-        >
-          {Object.keys(this.props.columnDef.lookup).map((key) => (
-            <MenuItem key={key} value={key}>
-              {this.props.columnDef.lookup[key]}
-            </MenuItem>
-          ))}
-        </Select>
-        {Boolean(helperText) && <FormHelperText>{helperText}</FormHelperText>}
-      </FormControl>
+      <Autocomplete
+        autoComplete
+        value={this.props.value === undefined ? options[0] : this.props.value}
+        onChange={(event, value) => {
+          this.props.onChange(value);
+        }}
+        options={options}
+        getOptionLabel={(option) => this.props.columnDef.lookup[option]}
+        fullWidth
+        renderInput={(params) => {
+          return <TextField {...params} label={this.props.columnDef.title} />;
+        }}
+      />
     );
   }
 
@@ -175,11 +170,11 @@ class MTableEditField extends React.Component {
               : event.target.value
           )
         }
-        InputProps={{
-          style: {
-            fontSize: 13,
-          },
-        }}
+        // InputProps={{
+        //   style: {
+        //     fontSize: 13,
+        //   },
+        // }}
         inputProps={{
           "aria-label": this.props.columnDef.title,
         }}
@@ -206,7 +201,7 @@ class MTableEditField extends React.Component {
         }}
         InputProps={{
           style: {
-            fontSize: 13,
+            // fontSize: 13,
             textAlign: "right",
           },
         }}

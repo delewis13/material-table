@@ -422,38 +422,43 @@ class App extends Component {
       },
     ],
     columns: [
+      // {
+      //   title: "Adı",
+      //   field: "name",
+      //   filterPlaceholder: "Adı filter",
+      //   tooltip: "This is tooltip text",
+      //   editPlaceholder: "This is placeholder",
+      //   maxWidth: 50,
+      // },
       {
-        title: "Adı",
-        field: "name",
-        filterPlaceholder: "Adı filter",
-        tooltip: "This is tooltip text",
-        editPlaceholder: "This is placeholder",
-        maxWidth: 50,
+        title: "select",
+        field: "ok",
+        lookup: { key1: "a", key2: "b", key3: "c" },
       },
-      {
-        title: "Soyadı",
-        field: "surname",
-        initialEditValue: "test",
-        tooltip: "This is tooltip text",
-        editable: "never",
-        resizable: false,
-      },
-      { title: "Evli", field: "isMarried" },
-      {
-        title: "Cinsiyet",
-        field: "sex",
-        disableClick: true,
-        editable: "onAdd",
-      },
-      { title: "Tipi", field: "type", removable: false, editable: "never" },
-      { title: "Doğum Yılı", field: "birthDate", type: "date" },
-      {
-        title: "Doğum Yeri",
-        field: "birthCity",
-        lookup: { 34: "İstanbul", 0: "Şanlıurfa" },
-      },
-      { title: "Kayıt Tarihi", field: "insertDateTime", type: "datetime" },
-      { title: "Zaman", field: "time", type: "time" },
+      // {
+      //   title: "Soyadı",
+      //   field: "surname",
+      //   initialEditValue: "test",
+      //   tooltip: "This is tooltip text",
+      //   editable: "never",
+      //   resizable: false,
+      // },
+      // { title: "Evli", field: "isMarried" },
+      // {
+      //   title: "Cinsiyet",
+      //   field: "sex",
+      //   disableClick: true,
+      //   editable: "onAdd",
+      // },
+      // { title: "Tipi", field: "type", removable: false, editable: "never" },
+      // { title: "Doğum Yılı", field: "birthDate", type: "date" },
+      // {
+      //   title: "Doğum Yeri",
+      //   field: "birthCity",
+      //   lookup: { 34: "İstanbul", 0: "Şanlıurfa" },
+      // },
+      // { title: "Kayıt Tarihi", field: "insertDateTime", type: "datetime" },
+      // { title: "Zaman", field: "time", type: "time" },
     ],
     remoteColumns: [
       {
@@ -485,6 +490,7 @@ class App extends Component {
                   tableRef={this.tableRef}
                   columns={this.state.columns}
                   data={this.state.data}
+                  editable={true}
                   title="Demo Title"
                   onFilterChange={(appliedFilter) => {
                     console.log("selected Filters : ", appliedFilter);
@@ -519,55 +525,55 @@ class App extends Component {
                       };
                     },
                   }}
-                  // editable={{
-                  //   onBulkUpdate: (changedRows) =>
-                  //     new Promise((resolve, reject) => {
-                  //       console.log(changedRows);
-                  //       setTimeout(() => {
-                  //         {
-                  //           /* const data = this.state.data;
-                  //           data.push(newData);
-                  //           this.setState({ data }, () => resolve()); */
-                  //         }
-                  //         resolve();
-                  //       }, 1000);
-                  //     }),
-                  //   onRowAdd: (newData) =>
-                  //     new Promise((resolve, reject) => {
-                  //       setTimeout(() => {
-                  //         {
-                  //           /* const data = this.state.data;
-                  //           data.push(newData);
-                  //           this.setState({ data }, () => resolve()); */
-                  //         }
-                  //         resolve();
-                  //       }, 1000);
-                  //     }),
-                  //   onRowUpdate: (newData, oldData) =>
-                  //     new Promise((resolve, reject) => {
-                  //       setTimeout(() => {
-                  //         {
-                  //           /* const data = this.state.data;
-                  //           const index = data.indexOf(oldData);
-                  //           data[index] = newData;
-                  //           this.setState({ data }, () => resolve()); */
-                  //         }
-                  //         resolve();
-                  //       }, 1000);
-                  //     }),
-                  //   onRowDelete: (oldData) =>
-                  //     new Promise((resolve, reject) => {
-                  //       setTimeout(() => {
-                  //         {
-                  //           /* let data = this.state.data;
-                  //           const index = data.indexOf(oldData);
-                  //           data.splice(index, 1);
-                  //           this.setState({ data }, () => resolve()); */
-                  //         }
-                  //         resolve();
-                  //       }, 1000);
-                  //     }),
-                  // }}
+                  editable={{
+                    onBulkUpdate: (changedRows) =>
+                      new Promise((resolve, reject) => {
+                        console.log(changedRows);
+                        setTimeout(() => {
+                          {
+                            /* const data = this.state.data;
+                            data.push(newData);
+                            this.setState({ data }, () => resolve()); */
+                          }
+                          resolve();
+                        }, 1000);
+                      }),
+                    onRowAdd: (newData) =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          {
+                            /* const data = this.state.data;
+                            data.push(newData);
+                            this.setState({ data }, () => resolve()); */
+                          }
+                          resolve();
+                        }, 1000);
+                      }),
+                    onRowUpdate: (newData, oldData) =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          {
+                            /* const data = this.state.data;
+                            const index = data.indexOf(oldData);
+                            data[index] = newData;
+                            this.setState({ data }, () => resolve()); */
+                          }
+                          resolve();
+                        }, 1000);
+                      }),
+                    onRowDelete: (oldData) =>
+                      new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                          {
+                            /* let data = this.state.data;
+                            const index = data.indexOf(oldData);
+                            data.splice(index, 1);
+                            this.setState({ data }, () => resolve()); */
+                          }
+                          resolve();
+                        }, 1000);
+                      }),
+                  }}
                   localization={{
                     body: {
                       emptyDataSourceMessage: "No records to display",
