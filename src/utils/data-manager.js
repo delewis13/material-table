@@ -9,6 +9,7 @@ export default class DataManager {
   detailPanelType = "multiple";
   lastDetailPanelRow = undefined;
   lastEditingRow = undefined;
+  hasAnyEditingRow = false;
   orderBy = -1;
   orderDirection = "";
   pageSize = 5;
@@ -57,6 +58,10 @@ export default class DataManager {
     });
 
     this.filtered = false;
+  }
+
+  setHasAnyEditingRow(hasAnyEditingRow) {
+    this.hasAnyEditingRow = hasAnyEditingRow;
   }
 
   setColumns(columns) {
@@ -197,7 +202,11 @@ export default class DataManager {
     this.currentPage = 0;
   }
 
-  changeRowEditing(rowData, mode) {
+  changeRowEditing(hasAnyEditingRow, rowData, mode) {
+    if (typeof hasAnyEditingRow === "boolean") {
+      this.setHasAnyEditingRow(hasAnyEditingRow);
+    }
+
     if (rowData) {
       rowData.tableData.editing = mode;
 
@@ -602,7 +611,14 @@ export default class DataManager {
     }
 
     return {
-      columns: this.columns,
+      columns: this.columns.filter((column) => {
+        if (column.hideOnEdit && this.hasAnyEditingRow) {
+          return false;
+        } else if (column.showOnlyOnEdit && !this.hasAnyEditingRow) {
+          return false;
+        }
+        return true;
+      }),
       currentPage: this.currentPage,
       data: this.sortedData,
       lastEditingRow: this.lastEditingRow,

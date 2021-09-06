@@ -434,10 +434,12 @@ class App extends Component {
         title: "select",
         field: "ok",
         lookup: { key1: "a", key2: "b", key3: "c" },
+        showOnlyOnEdit: true,
       },
       {
         title: "string data",
         field: "data",
+        hideOnEdit: true,
       },
       // {
       //   title: "Soyadı",
@@ -519,6 +521,7 @@ class App extends Component {
                     headerSelectionProps: {
                       color: "primary",
                     },
+                    columnsButton: true,
                     selection: false,
                     selectionProps: (rowData) => {
                       rowData.tableData.disabled = rowData.name === "A1";

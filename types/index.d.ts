@@ -140,6 +140,8 @@ export interface EditCellColumnDef {
 }
 
 export interface Column<RowData extends object> {
+  hideOnEdit?: boolean;
+  showOnlyOnEdit?: boolean;
   align?: "center" | "inherit" | "justify" | "left" | "right";
   cellStyle?:
     | React.CSSProperties

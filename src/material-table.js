@@ -229,7 +229,7 @@ export default class MaterialTable extends React.Component {
           position: "toolbar",
           disabled: !!this.dataManager.lastEditingRow,
           onClick: () => {
-            this.dataManager.changeRowEditing();
+            this.dataManager.changeRowEditing(!this.hasAnyEditingRow());
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: !this.state.showAddRow,
@@ -250,7 +250,11 @@ export default class MaterialTable extends React.Component {
             calculatedProps.editable.isEditHidden &&
             calculatedProps.editable.isEditHidden(rowData),
           onClick: (e, rowData) => {
-            this.dataManager.changeRowEditing(rowData, "update");
+            this.dataManager.changeRowEditing(
+              !this.hasAnyEditingRow(),
+              rowData,
+              "update"
+            );
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: false,
@@ -271,7 +275,7 @@ export default class MaterialTable extends React.Component {
             calculatedProps.editable.isDeleteHidden &&
             calculatedProps.editable.isDeleteHidden(rowData),
           onClick: (e, rowData) => {
-            this.dataManager.changeRowEditing(rowData, "delete");
+            this.dataManager.changeRowEditing(false, rowData, "delete");
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: false,
@@ -473,7 +477,7 @@ export default class MaterialTable extends React.Component {
         this.props.editable
           .onRowUpdate(newData, oldData)
           .then((result) => {
-            this.dataManager.changeRowEditing(oldData);
+            this.dataManager.changeRowEditing(true, oldData);
             this.setState(
               {
                 isLoading: false,
@@ -503,7 +507,7 @@ export default class MaterialTable extends React.Component {
         this.props.editable
           .onRowDelete(oldData)
           .then((result) => {
-            this.dataManager.changeRowEditing(oldData);
+            this.dataManager.changeRowEditing(false, oldData);
             this.setState(
               {
                 isLoading: false,
@@ -559,17 +563,21 @@ export default class MaterialTable extends React.Component {
   };
 
   onEditingCanceled = (mode, rowData) => {
+    this.dataManager.setHasAnyEditingRow(false);
     if (mode === "add") {
       this.props.editable.onRowAddCancelled &&
         this.props.editable.onRowAddCancelled();
-      this.setState({ showAddRow: false });
+      this.setState({
+        ...this.dataManager.getRenderState(),
+        showAddRow: false,
+      });
     } else if (mode === "update") {
       this.props.editable.onRowUpdateCancelled &&
         this.props.editable.onRowUpdateCancelled();
-      this.dataManager.changeRowEditing(rowData);
+      this.dataManager.changeRowEditing(false, rowData);
       this.setState(this.dataManager.getRenderState());
     } else if (mode === "delete") {
-      this.dataManager.changeRowEditing(rowData);
+      this.dataManager.changeRowEditing(false, rowData);
       this.setState(this.dataManager.getRenderState());
     }
   };
@@ -812,6 +820,13 @@ export default class MaterialTable extends React.Component {
     }
   }
 
+  hasAnyEditingRow() {
+    return !!(
+      this.state &&
+      (this.state.lastEditingRow || this.state.showAddRow)
+    );
+  }
+
   renderTable = (props) => (
     <Table
       style={{
@@ -895,9 +910,7 @@ export default class MaterialTable extends React.Component {
         }}
         onRowClick={this.props.onRowClick}
         showAddRow={this.state.showAddRow}
-        hasAnyEditingRow={
-          !!(this.state.lastEditingRow || this.state.showAddRow)
-        }
+        hasAnyEditingRow={this.hasAnyEditingRow()}
         hasDetailPanel={!!props.detailPanel}
         treeDataMaxLevel={this.state.treeDataMaxLevel}
         cellEditable={props.cellEditable}
