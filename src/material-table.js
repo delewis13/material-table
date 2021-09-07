@@ -229,7 +229,10 @@ export default class MaterialTable extends React.Component {
           position: "toolbar",
           disabled: !!this.dataManager.lastEditingRow,
           onClick: () => {
-            this.dataManager.changeRowEditing(!this.hasAnyEditingRow());
+            if (this.props.onEditingStart) {
+              this.props.onEditingStart();
+            }
+            this.dataManager.changeRowEditing(true);
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: !this.state.showAddRow,
@@ -250,11 +253,10 @@ export default class MaterialTable extends React.Component {
             calculatedProps.editable.isEditHidden &&
             calculatedProps.editable.isEditHidden(rowData),
           onClick: (e, rowData) => {
-            this.dataManager.changeRowEditing(
-              !this.hasAnyEditingRow(),
-              rowData,
-              "update"
-            );
+            if (this.props.onEditingStart) {
+              this.props.onEditingStart();
+            }
+            this.dataManager.changeRowEditing(true, rowData, "update");
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: false,
@@ -467,6 +469,9 @@ export default class MaterialTable extends React.Component {
                 }
               }
             );
+            if (this.props.onEditingClosed) {
+              this.props.onEditingClosed();
+            }
           })
           .catch((reason) => {
             const errorState = {
@@ -497,6 +502,9 @@ export default class MaterialTable extends React.Component {
                 }
               }
             );
+            if (this.props.onEditingClosed) {
+              this.props.onEditingClosed();
+            }
           })
           .catch((reason) => {
             const errorState = {
@@ -572,6 +580,9 @@ export default class MaterialTable extends React.Component {
 
   onEditingCanceled = (mode, rowData) => {
     this.dataManager.setHasAnyEditingRow(false);
+    if (this.props.onEditingClosed) {
+      this.props.onEditingClosed();
+    }
     if (mode === "add") {
       this.props.editable.onRowAddCancelled &&
         this.props.editable.onRowAddCancelled();

@@ -493,6 +493,8 @@ class App extends Component {
               <Grid item xs={12}>
                 {this.state.selectedRows && this.state.selectedRows.length}
                 <MaterialTable
+                  onEditingClosed={() => console.log("closed")}
+                  onEditingStart={() => console.log("started")}
                   tableRef={this.tableRef}
                   columns={this.state.columns}
                   data={this.state.data}
