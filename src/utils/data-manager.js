@@ -585,6 +585,17 @@ export default class DataManager {
     return result;
   }
 
+  filterColumns() {
+    return this.columns.filter((column) => {
+      if (column.hideOnEdit && this.hasAnyEditingRow) {
+        return false;
+      } else if (column.showOnlyOnEdit && !this.hasAnyEditingRow) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   getRenderState = () => {
     if (this.filtered === false) {
       this.filterData();
@@ -611,14 +622,7 @@ export default class DataManager {
     }
 
     return {
-      columns: this.columns.filter((column) => {
-        if (column.hideOnEdit && this.hasAnyEditingRow) {
-          return false;
-        } else if (column.showOnlyOnEdit && !this.hasAnyEditingRow) {
-          return false;
-        }
-        return true;
-      }),
+      columns: this.filterColumns(),
       currentPage: this.currentPage,
       data: this.sortedData,
       lastEditingRow: this.lastEditingRow,

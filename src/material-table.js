@@ -454,11 +454,19 @@ export default class MaterialTable extends React.Component {
         this.props.editable
           .onRowAdd(newData)
           .then((result) => {
-            this.setState({ isLoading: false, showAddRow: false }, () => {
-              if (this.isRemoteData()) {
-                this.onQueryChange(this.state.query);
+            this.dataManager.setHasAnyEditingRow(false);
+            this.setState(
+              {
+                isLoading: false,
+                showAddRow: false,
+                columns: this.dataManager.filterColumns(),
+              },
+              () => {
+                if (this.isRemoteData()) {
+                  this.onQueryChange(this.state.query);
+                }
               }
-            });
+            );
           })
           .catch((reason) => {
             const errorState = {
@@ -477,7 +485,7 @@ export default class MaterialTable extends React.Component {
         this.props.editable
           .onRowUpdate(newData, oldData)
           .then((result) => {
-            this.dataManager.changeRowEditing(true, oldData);
+            this.dataManager.changeRowEditing(false, oldData);
             this.setState(
               {
                 isLoading: false,
