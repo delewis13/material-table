@@ -229,14 +229,16 @@ export default class MaterialTable extends React.Component {
           position: "toolbar",
           disabled: !!this.dataManager.lastEditingRow,
           onClick: () => {
-            this.dataManager.changeRowEditing(true);
-            this.setState({
-              ...this.dataManager.getRenderState(),
-              showAddRow: !this.state.showAddRow,
-            });
             if (this.props.onEditingStart) {
               this.props.onEditingStart();
             }
+            setTimeout(() => {
+              this.dataManager.changeRowEditing(true);
+              this.setState({
+                ...this.dataManager.getRenderState(),
+                showAddRow: !this.state.showAddRow,
+              });
+            }, 0);
           },
         });
       }
@@ -256,11 +258,13 @@ export default class MaterialTable extends React.Component {
             if (this.props.onEditingStart) {
               this.props.onEditingStart();
             }
-            this.dataManager.changeRowEditing(true, rowData, "update");
-            this.setState({
-              ...this.dataManager.getRenderState(),
-              showAddRow: false,
-            });
+            setTimeout(() => {
+              this.dataManager.changeRowEditing(true, rowData, "update");
+              this.setState({
+                ...this.dataManager.getRenderState(),
+                showAddRow: false,
+              });
+            }, 0);
           },
         }));
       }
@@ -891,6 +895,7 @@ export default class MaterialTable extends React.Component {
           onAllSelected={this.onAllSelected}
           onOrderChange={this.onChangeOrder}
           actionsHeaderIndex={props.options.actionsColumnIndex}
+          actionsHeaderStyle={props.options.actionsHeaderStyle}
           sorting={props.options.sorting}
           grouping={props.options.grouping}
           isTreeData={this.props.parentChildData !== undefined}

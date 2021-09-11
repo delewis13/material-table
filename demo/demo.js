@@ -17,16 +17,19 @@ const theme = createMuiTheme({
 const defaultHidden = {
   select: true,
   text: false,
+  number: false,
 };
 
 const defaultHiddenWhileEditing = {
   select: false,
   text: true,
+  number: true,
 };
 
 const App = () => {
   const [hiddenColumns, setHiddenColumns] = useState(defaultHidden);
   const [state, setState] = useState(false);
+
   return (
     <MuiThemeProvider theme={theme}>
       <div style={{ width: "100%" }}>
@@ -34,28 +37,50 @@ const App = () => {
         <MaterialTable
           options={{
             columnsButton: true,
+            filtering: true,
+            fixedLayout: true,
+            actionsHeaderStyle: {
+              width: "200px",
+            },
           }}
           columns={[
             {
               title: "select",
               field: "select",
               lookup: { key1: "a", key2: "b", key3: "c" },
-              hideOnEdit: true,
+              hiddenByColumnsButton: hiddenColumns["select"],
+              hidden: hiddenColumns["select"],
             },
             {
               title: "text",
               field: "text",
-              showOnlyOnEdit: true,
+              width: "1%",
+              hiddenByColumnsButton: hiddenColumns["text"],
+              hidden: hiddenColumns["text"],
+            },
+            {
+              title: "number",
+              field: "number",
+              hiddenByColumnsButton: hiddenColumns["number"],
+              hidden: hiddenColumns["number"],
             },
           ]}
+          onChangeColumnHidden={(column, hidden) => {
+            setHiddenColumns({
+              ...hiddenColumns,
+              [column.field]: hidden,
+            });
+          }}
           data={[
             {
               select: "key1",
               text: "my text",
+              number: 1,
             },
             {
               select: "key2",
               text: "other text",
+              number: 2,
             },
           ]}
           editable={true}

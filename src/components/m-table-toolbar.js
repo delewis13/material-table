@@ -178,7 +178,7 @@ export class MTableToolbar extends React.Component {
 
     return (
       <div>
-        {this.props.columnsButton && (
+        {this.props.columnsButton && !this.props.dataManager.hasAnyEditingRow && (
           <span>
             <Tooltip title={localization.showColumnsTitle}>
               <IconButton

@@ -295,6 +295,7 @@ export interface Icons {
 
 export interface Options<RowData extends object> {
   actionsCellStyle?: React.CSSProperties;
+  actionsHeaderStyle?: React.CSSProperties;
   detailPanelColumnStyle?: React.CSSProperties;
   editCellStyle?: React.CSSProperties;
   actionsColumnIndex?: number;

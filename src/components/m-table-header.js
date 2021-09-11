@@ -74,16 +74,16 @@ export class MTableHeader extends React.Component {
   };
 
   getCellStyle = (columnDef) => {
-    const width = CommonValues.reducePercentsInCalc(
-      columnDef.tableData.width,
-      this.props.scrollWidth
-    );
+    // const width = CommonValues.reducePercentsInCalc(
+    //   columnDef.tableData.width,
+    //   this.props.scrollWidth
+    // );
 
     const style = {
       ...this.props.headerStyle,
       ...columnDef.headerStyle,
       boxSizing: "border-box",
-      width,
+      width: columnDef.width,
       maxWidth: columnDef.maxWidth,
       minWidth: columnDef.minWidth,
     };
@@ -137,6 +137,7 @@ export class MTableHeader extends React.Component {
               IconComponent={this.props.icons.SortArrow}
               active={this.props.orderBy === columnDef.tableData.id}
               direction={this.props.orderDirection || "asc"}
+              hideSortIcon={true}
               onClick={() => {
                 const orderDirection =
                   columnDef.tableData.id !== this.props.orderBy
@@ -233,6 +234,7 @@ export class MTableHeader extends React.Component {
           width: width,
           textAlign: "center",
           boxSizing: "border-box",
+          ...this.props.actionsHeaderStyle,
         }}
       >
         <TableSortLabel hideSortIcon={true} disabled>
@@ -252,7 +254,7 @@ export class MTableHeader extends React.Component {
         padding="none"
         key="key-selection-column"
         className={this.props.classes.header}
-        style={{ ...this.props.headerStyle, width: selectionWidth }}
+        style={{ width: selectionWidth, ...this.props.headerStyle }}
       >
         {this.props.showSelectAllCheckbox && (
           <Checkbox
