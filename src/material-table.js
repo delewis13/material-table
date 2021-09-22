@@ -229,11 +229,11 @@ export default class MaterialTable extends React.Component {
           position: "toolbar",
           disabled: !!this.dataManager.lastEditingRow,
           onClick: () => {
-            if (this.props.onEditingStart) {
+            if (!this.hasAnyEditingRow & this.props.onEditingStart) {
               this.props.onEditingStart();
             }
             setTimeout(() => {
-              this.dataManager.changeRowEditing(true);
+              this.dataManager.changeRowEditing(!this.hasAnyEditingRow);
               this.setState({
                 ...this.dataManager.getRenderState(),
                 showAddRow: !this.state.showAddRow,
