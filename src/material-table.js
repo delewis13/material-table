@@ -233,7 +233,7 @@ export default class MaterialTable extends React.Component {
               this.props.onEditingStart();
             }
             setTimeout(() => {
-              this.dataManager.changeRowEditing(!this.hasAnyEditingRow);
+              this.dataManager.changeRowEditing(!this.hasAnyEditingRow());
               this.setState({
                 ...this.dataManager.getRenderState(),
                 showAddRow: !this.state.showAddRow,
@@ -805,8 +805,8 @@ export default class MaterialTable extends React.Component {
                   ),
                 }}
                 page={this.isRemoteData() ? this.state.query.page : currentPage}
-                onChangePage={this.onChangePage}
-                onChangeRowsPerPage={this.onChangeRowsPerPage}
+                onPageChange={this.onChangePage}
+                onRowsPerPageChange={this.onChangeRowsPerPage}
                 ActionsComponent={(subProps) =>
                   props.options.paginationType === "normal" ? (
                     <MTablePagination
