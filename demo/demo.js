@@ -29,6 +29,22 @@ const defaultHiddenWhileEditing = {
 const App = () => {
   const [hiddenColumns, setHiddenColumns] = useState(defaultHidden);
   const [state, setState] = useState(false);
+  const categories = ["a", "b", "c"];
+
+  const data = [
+    {
+      select: "key1",
+      text: "my text",
+      number: 1,
+      lookupField: categories[0],
+    },
+    {
+      select: "key2",
+      text: "other text",
+      number: 2,
+      lookupField: categories[1],
+    },
+  ];
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -64,6 +80,20 @@ const App = () => {
               hiddenByColumnsButton: hiddenColumns["number"],
               hidden: hiddenColumns["number"],
             },
+            {
+              title: "showOnHide",
+              field: "number",
+              showOnlyOnEdit: true,
+              // hiddenByColumnsButton: hiddenColumns["number"],
+              // hidden: hiddenColumns["number"],
+            },
+            {
+              title: "lookup",
+              field: "lookupField",
+              // initialEditValue: categories[Object.keys(categories)[0]],
+              lookup: categories,
+              initialEditValue: categories[0],
+            },
           ]}
           onChangeColumnHidden={(column, hidden) => {
             setHiddenColumns({
@@ -71,18 +101,7 @@ const App = () => {
               [column.field]: hidden,
             });
           }}
-          data={[
-            {
-              select: "key1",
-              text: "my text",
-              number: 1,
-            },
-            {
-              select: "key2",
-              text: "other text",
-              number: 2,
-            },
-          ]}
+          data={data}
           editable={true}
           title="Demo Title"
           editable={{
