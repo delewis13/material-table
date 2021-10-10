@@ -434,7 +434,8 @@ export default class MTableBodyRow extends React.Component {
           hover={onRowClick ? true : false}
           style={this.getStyle(this.props.index, this.props.level)}
           onClick={(event) => {
-            onRowClick &&
+            !hasAnyEditingRow &&
+              onRowClick &&
               onRowClick(event, this.props.data, (panelIndex) => {
                 let panel = detailPanel;
                 if (Array.isArray(panel)) {
