@@ -30,7 +30,10 @@ class MTableEditField extends React.Component {
   }
 
   renderLookupField() {
-    const options = Object.keys(this.props.columnDef.lookup);
+    const isArray = Array.isArray(this.props.columnDef.lookup);
+    const options = isArray
+      ? this.props.columnDef.lookup
+      : Object.keys(this.props.columnDef.lookup);
 
     return (
       <Autocomplete
@@ -40,12 +43,16 @@ class MTableEditField extends React.Component {
           this.props.onChange(value);
         }}
         options={options}
-        getOptionLabel={(option) => this.props.columnDef.lookup[option]}
+        defaultValue={this.props.columnDef.initialEditValue}
+        getOptionLabel={(option) =>
+          isArray ? option : this.props.columnDef.lookup[option]
+        }
         fullWidth
         renderInput={(params) => {
           return (
             <TextField
               {...params}
+              defaultValue={this.props.columnDef.initialEditValue}
               placeholder={this.props.columnDef.editPlaceholder}
             />
           );
@@ -155,6 +162,14 @@ class MTableEditField extends React.Component {
     );
   }
 
+  getEditPlaceholder() {
+    if (this.props.columnDef.editPlaceholder) {
+      return this.props.columnDef.editPlaceholder;
+    } else if (typeof this.props.columnDef.title === "string") {
+      return this.props.columnDef.title;
+    }
+  }
+
   renderTextField() {
     return (
       <TextField
@@ -164,9 +179,7 @@ class MTableEditField extends React.Component {
           this.props.columnDef.type === "numeric" ? { float: "right" } : {}
         }
         type={this.props.columnDef.type === "numeric" ? "number" : "text"}
-        placeholder={
-          this.props.columnDef.editPlaceholder || this.props.columnDef.title
-        }
+        placeholder={this.getEditPlaceholder()}
         value={this.props.value === undefined ? "" : this.props.value}
         onChange={(event) =>
           this.props.onChange(
