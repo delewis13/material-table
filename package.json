@@ -1,6 +1,6 @@
 {
   "name": "@delewis13/material-table",
-  "version": "1.69.24",
+  "version": "1.69.25",
   "description": "Fork of https://github.com/mbrn/material-table",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
