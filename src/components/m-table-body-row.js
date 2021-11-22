@@ -435,6 +435,7 @@ export default class MTableBodyRow extends React.Component {
           style={this.getStyle(this.props.index, this.props.level)}
           onClick={(event) => {
             !hasAnyEditingRow &&
+              !event.defaultPrevented &&
               onRowClick &&
               onRowClick(event, this.props.data, (panelIndex) => {
                 let panel = detailPanel;

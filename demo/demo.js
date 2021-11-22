@@ -59,8 +59,25 @@ const App = () => {
               width: "200px",
             },
           }}
+          onRowClick={(e) => {
+            console.log("row clicked: ", e.defaultPrevented);
+          }}
           columns={[
             {
+              cellEditable: {
+                onCellEditApproved: async () => console.log("edit approved"),
+                cellStyle: {},
+              },
+              title: "select",
+              field: "select",
+              editComponent: function renderEdit(props) {
+                return <div onClick={(e) => e.preventDefault()}>hi</div>;
+              },
+            },
+            {
+              cellEditable: {
+                onCellEditApproved: () => console.log("edit approved"),
+              },
               title: "select",
               field: "select",
               lookup: { key1: "a", key2: "b", key3: "c" },

@@ -146,6 +146,15 @@ export interface Column<RowData extends object> {
   cellStyle?:
     | React.CSSProperties
     | ((data: RowData[], rowData: RowData) => React.CSSProperties);
+  cellEditable?: {
+    cellStyle?: React.CSSProperties;
+    onCellEditApproved: (
+      newValue: any,
+      oldValue: any,
+      rowData: RowData,
+      columnDef: Column<RowData>
+    ) => Promise<void>;
+  };
   currencySetting?: {
     locale?: string;
     currencyCode?: string;

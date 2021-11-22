@@ -168,20 +168,21 @@ export default class MTableCell extends React.Component {
         : "left";
 
     let renderValue = this.getRenderValue();
-    if (cellEditable) {
+    if (cellEditable || columnDef.cellEditable) {
       renderValue = (
-        <div
-          style={{
-            borderBottom: "1px dashed grey",
-            cursor: "pointer",
-            width: "max-content",
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onCellEditStarted(this.props.rowData, this.props.columnDef);
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center" }}>
           {renderValue}
+          {
+            <this.props.icons.Edit
+              color="action"
+              size="large"
+              style={{ transform: "scale(0.7)", cursor: "pointer" }}
+              onClick={(e) => {
+                e.preventDefault();
+                onCellEditStarted(this.props.rowData, this.props.columnDef);
+              }}
+            />
+          }
         </div>
       );
     }

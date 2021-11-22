@@ -39,17 +39,19 @@ class MTableEditCell extends React.Component {
       cellStyle = { ...cellStyle, ...this.props.columnDef.cellStyle };
     }
 
-    if (typeof this.props.cellEditable.cellStyle === "function") {
-      cellStyle = {
-        ...cellStyle,
-        ...this.props.cellEditable.cellStyle(
-          this.state.value,
-          this.props.rowData,
-          this.props.columnDef
-        ),
-      };
-    } else {
-      cellStyle = { ...cellStyle, ...this.props.cellEditable.cellStyle };
+    if (this.props.cellEditable) {
+      if (typeof this.props.cellEditable.cellStyle === "function") {
+        cellStyle = {
+          ...cellStyle,
+          ...this.props.cellEditable.cellStyle(
+            this.state.value,
+            this.props.rowData,
+            this.props.columnDef
+          ),
+        };
+      } else {
+        cellStyle = { ...cellStyle, ...this.props.cellEditable.cellStyle };
+      }
     }
 
     return cellStyle;
@@ -65,13 +67,21 @@ class MTableEditCell extends React.Component {
 
   onApprove = () => {
     this.setState({ isLoading: true }, () => {
-      this.props.cellEditable
-        .onCellEditApproved(
-          this.state.value, // newValue
-          this.props.rowData[this.props.columnDef.field], // oldValue
-          this.props.rowData, // rowData with old value
-          this.props.columnDef // columnDef
-        )
+      let fn;
+      if (this.props.cellEditable) {
+        fn = this.props.cellEditable.onCellEditApproved;
+      } else if (this.props.columnDef.cellEditable) {
+        fn = this.props.columnDef.cellEditable.onCellEditApproved;
+      } else {
+        return;
+      }
+
+      fn(
+        this.state.value, // newValue
+        this.props.rowData[this.props.columnDef.field], // oldValue
+        this.props.rowData, // rowData with old value
+        this.props.columnDef // columnDef
+      )
         .then(() => {
           this.setState({ isLoading: false });
           this.props.onCellEditFinished(
@@ -124,7 +134,12 @@ class MTableEditCell extends React.Component {
 
   render() {
     return (
-      <TableCell size={this.props.size} style={this.getStyle()} padding="none">
+      <TableCell
+        size={this.props.size}
+        style={this.getStyle()}
+        padding="none"
+        onClick={(e) => e.preventDefault()}
+      >
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ flex: 1, marginRight: 4 }}>
             <this.props.components.EditField
