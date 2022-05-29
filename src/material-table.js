@@ -883,6 +883,9 @@ export default class MaterialTable extends React.Component {
           }
           hasDetailPanel={!!props.detailPanel}
           detailPanelColumnAlignment={props.options.detailPanelColumnAlignment}
+          enableRowDragAndDrop={
+            props.options.enableRowDragAndDrop && !this.hasAnyEditingRow()
+          }
           showActionsColumn={
             props.actions &&
             props.actions.filter(
@@ -918,7 +921,11 @@ export default class MaterialTable extends React.Component {
         columns={this.state.columns}
         errorState={this.state.errorState}
         detailPanel={props.detailPanel}
-        options={props.options}
+        options={{
+          ...props.options,
+          enableRowDragAndDrop:
+            this.props.options.enableRowDragAndDrop && !this.hasAnyEditingRow(),
+        }}
         getFieldValue={this.dataManager.getFieldValue}
         isTreeData={this.props.parentChildData !== undefined}
         onFilterChanged={this.onFilterChange}
@@ -928,6 +935,7 @@ export default class MaterialTable extends React.Component {
         onTreeExpandChanged={this.onTreeExpandChanged}
         onEditingCanceled={this.onEditingCanceled}
         onEditingApproved={this.onEditingApproved}
+        onDragEnd={this.props.onDragEnd}
         localization={{
           ...MaterialTable.defaultProps.localization.body,
           ...this.props.localization.body,
@@ -987,7 +995,6 @@ export default class MaterialTable extends React.Component {
         }
       }
     }
-
     return "calc(" + result.join(" + ") + ")";
   };
 

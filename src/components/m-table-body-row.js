@@ -8,7 +8,16 @@ import Tooltip from "@material-ui/core/Tooltip";
 import PropTypes from "prop-types";
 import * as React from "react";
 import * as CommonValues from "../utils/common-values";
+import { Draggable } from "react-beautiful-dnd";
 /* eslint-enable no-unused-vars */
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+
+  width: "100%",
+  // styles we need to apply on draggables
+  ...draggableStyle,
+});
 
 export default class MTableBodyRow extends React.Component {
   renderColumns() {
@@ -75,6 +84,26 @@ export default class MTableBodyRow extends React.Component {
         }
       });
     return mapArr;
+  }
+
+  renderDragHandle(provided, snapshot) {
+    const size = CommonValues.elementSize(this.props);
+    const width = CommonValues.baseIconSize(this.props);
+    return (
+      <TableCell size={size} padding="none" key="key-drag-handle-column">
+        <div
+          {...provided.dragHandleProps}
+          style={{
+            width: width,
+            padding: "0px 10px",
+            boxSizing: "border-box",
+            display: "flex",
+          }}
+        >
+          <this.props.icons.DragIndicator />
+        </div>
+      </TableCell>
+    );
   }
 
   renderActions() {
@@ -428,29 +457,51 @@ export default class MTableBodyRow extends React.Component {
 
     return (
       <>
-        <TableRow
-          selected={hasAnyEditingRow}
-          {...rowProps}
-          hover={onRowClick ? true : false}
-          style={this.getStyle(this.props.index, this.props.level)}
-          onClick={(event) => {
-            !hasAnyEditingRow &&
-              onRowClick &&
-              onRowClick(event, this.props.data, (panelIndex) => {
-                let panel = detailPanel;
-                if (Array.isArray(panel)) {
-                  panel = panel[panelIndex || 0];
-                  if (typeof panel === "function") {
-                    panel = panel(this.props.data);
-                  }
-                  panel = panel.render;
-                }
-                onToggleDetailPanel(this.props.path, panel);
-              });
-          }}
+        <Draggable
+          key={"row-" + data.tableData.id}
+          draggableId={JSON.stringify(data.tableData.id)}
+          index={this.props.index}
+          isDragDisabled={!this.props.options.enableRowDragAndDrop}
         >
-          {renderColumns}
-        </TableRow>
+          {(provided, snapshot) => (
+            <TableRow
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              selected={hasAnyEditingRow}
+              {...rowProps}
+              hover={onRowClick ? true : false}
+              style={{
+                ...this.getStyle(this.props.index, this.props.level),
+                ...getItemStyle(
+                  snapshot.isDragging,
+                  provided.draggableProps.style
+                ),
+                display: snapshot.isDragging ? "table" : undefined,
+                ...this.props.style,
+              }}
+              onClick={(event) => {
+                !hasAnyEditingRow &&
+                  onRowClick &&
+                  onRowClick(event, this.props.data, (panelIndex) => {
+                    let panel = detailPanel;
+                    if (Array.isArray(panel)) {
+                      panel = panel[panelIndex || 0];
+                      if (typeof panel === "function") {
+                        panel = panel(this.props.data);
+                      }
+                      panel = panel.render;
+                    }
+                    onToggleDetailPanel(this.props.path, panel);
+                  });
+              }}
+            >
+              {this.props.options.enableRowDragAndDrop
+                ? this.renderDragHandle(provided, snapshot)
+                : undefined}
+              {renderColumns}
+            </TableRow>
+          )}
+        </Draggable>
         {this.props.data.tableData &&
           this.props.data.tableData.showDetailPanel && (
             <TableRow

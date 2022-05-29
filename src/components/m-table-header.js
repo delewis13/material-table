@@ -243,6 +243,26 @@ export class MTableHeader extends React.Component {
       </TableCell>
     );
   }
+
+  renderDragHandleHeader() {
+    // const width = CommonValues.dragHandleColumnWidth(this.props);
+    return (
+      <TableCell
+        key="key-drag-handle-column"
+        padding="checkbox"
+        className={this.props.classes.header}
+        style={{
+          ...this.props.headerStyle,
+          width: "20px",
+          textAlign: "center",
+          boxSizing: "border-box",
+        }}
+      >
+        <TableSortLabel hideSortIcon={true} disabled></TableSortLabel>
+      </TableCell>
+    );
+  }
+
   renderSelectionHeader() {
     const selectionWidth = CommonValues.selectionMaxWidth(
       this.props,
@@ -307,6 +327,10 @@ export class MTableHeader extends React.Component {
       } else if (this.props.actionsHeaderIndex === -1) {
         headers.push(this.renderActionsHeader());
       }
+    }
+
+    if (this.props.enableRowDragAndDrop) {
+      headers.splice(0, 0, this.renderDragHandleHeader());
     }
 
     if (this.props.hasDetailPanel) {
@@ -389,6 +413,7 @@ MTableHeader.propTypes = {
   draggable: PropTypes.bool,
   thirdSortClick: PropTypes.bool,
   tooltip: PropTypes.string,
+  enableRowDragAndDrop: PropTypes.bool,
 };
 
 export const styles = (theme) => ({

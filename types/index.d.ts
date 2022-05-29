@@ -2,6 +2,7 @@ import * as React from "react";
 import { IconProps } from "@material-ui/core/Icon";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import { string } from "prop-types";
+import { DropResult, ResponderProvided } from "react-beautiful-dnd";
 
 type SvgIconComponent = typeof SvgIcon;
 
@@ -45,6 +46,11 @@ export interface MaterialTableProps<RowData extends object> {
   options?: Options<RowData>;
   parentChildData?: (row: RowData, rows: RowData[]) => RowData | undefined;
   localization?: Localization;
+  onDragEnd?: (
+    result: DropResult,
+    provider: ResponderProvided,
+    offset: number
+  ) => void;
   onChangeRowsPerPage?: (pageSize: number) => void;
   onPageChange?: (page: number, pageSize: number) => void;
   onChangeColumnHidden?: (column: Column<RowData>, hidden: boolean) => void;
@@ -307,6 +313,7 @@ export interface Options<RowData extends object> {
   detailPanelType?: "single" | "multiple";
   doubleHorizontalScroll?: boolean;
   draggable?: boolean;
+  enableRowDragAndDrop?: boolean;
   emptyRowsWhenPaging?: boolean;
   exportAllData?: boolean;
   exportButton?: boolean | { csv?: boolean; pdf?: boolean };

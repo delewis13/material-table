@@ -6,6 +6,7 @@ export const rowActions = (props) =>
   props.actions.filter((a) => a.position === "row" || typeof a === "function");
 export const actionsColumnWidth = (props) =>
   rowActions(props).length * baseIconSize(props);
+export const dragHandleColumnWidth = (props) => 1 * baseIconSize(props);
 export const selectionMaxWidth = (props, maxTreeLevel) =>
   baseIconSize(props) + 9 * maxTreeLevel;
 

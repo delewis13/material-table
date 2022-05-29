@@ -4,6 +4,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import PropTypes from "prop-types";
 import * as React from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 /* eslint-enable no-unused-vars */
 
 class MTableBody extends React.Component {
@@ -197,13 +198,14 @@ class MTableBody extends React.Component {
       emptyRowCount = this.props.pageSize - renderData.length;
     }
 
-    return (
-      <TableBody>
+    const Body = ({ provided }) => (
+      <TableBody {...provided.droppableProps} ref={provided.innerRef}>
         {this.props.options.filtering && (
           <this.props.components.FilterRow
             columns={this.props.columns.filter(
               (columnDef) => !columnDef.hidden
             )}
+            enableRowDragAndDrop={this.props.options.enableRowDragAndDrop}
             icons={this.props.icons}
             hasActions={
               this.props.actions.filter(
@@ -290,6 +292,30 @@ class MTableBody extends React.Component {
         )}
         {this.renderEmpty(emptyRowCount, renderData)}
       </TableBody>
+    );
+
+    return (
+      <DragDropContext
+        onDragEnd={(dropResult, provided) =>
+          this.props.onDragEnd(
+            dropResult,
+            provided,
+            this.props.pageSize * this.props.currentPage
+          )
+        }
+      >
+        <Droppable
+          isDropDisabled={!this.props.options.enableRowDragAndDrop}
+          droppableId="droppable"
+        >
+          {(provided) => (
+            <>
+              <Body provided={provided} />
+              {provided.placeholder}
+            </>
+          )}
+        </Droppable>
+      </DragDropContext>
     );
   }
 }

@@ -243,6 +243,14 @@ class MTableFilterRow extends React.Component {
           <TableCell key="key-action-column" />
         );
       }
+
+      if (this.props.enableRowDragAndDrop) {
+        columns.splice(
+          0,
+          0,
+          <TableCell key="key-drag-handle-column" style={{ padding: "0px" }} />
+        );
+      }
     }
 
     if (this.props.hasDetailPanel) {
@@ -306,6 +314,7 @@ MTableFilterRow.propTypes = {
   selection: PropTypes.bool.isRequired,
   actionsColumnIndex: PropTypes.number,
   hasActions: PropTypes.bool,
+  enableRowDragAndDrop: PropTypes.bool,
   localization: PropTypes.object,
   hideFilterIcons: PropTypes.bool,
 };

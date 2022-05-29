@@ -44,6 +44,36 @@ const App = () => {
       number: 2,
       lookupField: categories[1],
     },
+    {
+      select: "key3",
+      text: "3",
+      number: 3,
+      lookupField: categories[1],
+    },
+    {
+      select: "key4",
+      text: "4",
+      number: 4,
+      lookupField: categories[1],
+    },
+    {
+      select: "key5",
+      text: "5",
+      number: 5,
+      lookupField: categories[1],
+    },
+    {
+      select: "key6",
+      text: "6",
+      number: 6,
+      lookupField: categories[1],
+    },
+    {
+      select: "key7",
+      text: "7",
+      number: 7,
+      lookupField: categories[1],
+    },
   ];
 
   return (
@@ -53,8 +83,13 @@ const App = () => {
         <MaterialTable
           options={{
             columnsButton: true,
+            paging: false,
             filtering: true,
+            enableRowDragAndDrop: true,
             fixedLayout: true,
+            tableLayout: "fixed",
+            maxBodyHeight: "400px",
+            actionsColumnIndex: 3,
             actionsHeaderStyle: {
               width: "200px",
             },
@@ -63,6 +98,7 @@ const App = () => {
             {
               title: "select",
               field: "select",
+              width: "20%",
               lookup: { key1: "a", key2: "b", key3: "c" },
               hiddenByColumnsButton: hiddenColumns["select"],
               hidden: hiddenColumns["select"],
@@ -70,25 +106,28 @@ const App = () => {
             {
               title: "text",
               field: "text",
-              width: "1%",
+              width: "50%",
               hiddenByColumnsButton: hiddenColumns["text"],
               hidden: hiddenColumns["text"],
             },
             {
               title: "number",
               field: "number",
+              width: "10%",
               hiddenByColumnsButton: hiddenColumns["number"],
               hidden: hiddenColumns["number"],
             },
             {
               title: "showOnHide",
               field: "number",
+              width: "10%",
               showOnlyOnEdit: true,
               // hiddenByColumnsButton: hiddenColumns["number"],
               // hidden: hiddenColumns["number"],
             },
             {
               title: "lookup",
+              width: "10%",
               field: "lookupField",
               // initialEditValue: categories[Object.keys(categories)[0]],
               lookup: categories,

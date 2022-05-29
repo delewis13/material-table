@@ -119,6 +119,11 @@ export const defaultProps = {
         chevron_right
       </Icon>
     )),
+    DragIndicator: React.forwardRef((props, ref) => (
+      <Icon {...props} ref={ref}>
+        drag_indicator
+      </Icon>
+    )),
     Edit: React.forwardRef((props, ref) => (
       <Icon {...props} ref={ref}>
         edit
