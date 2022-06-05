@@ -1,6 +1,7 @@
 const webpack = require("webpack");
 
 module.exports = {
+  devtool: "eval-source-map",
   entry: ["babel-polyfill", "./demo/demo.js"],
   module: {
     rules: [
