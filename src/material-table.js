@@ -844,10 +844,7 @@ export default class MaterialTable extends React.Component {
   }
 
   hasAnyEditingRow() {
-    return !!(
-      this.state &&
-      (this.state.lastEditingRow || this.state.showAddRow)
-    );
+    return !!(this.dataManager.lastEditingRow || this.state.showAddRow);
   }
 
   renderTable = (props) => (

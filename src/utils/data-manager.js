@@ -222,6 +222,7 @@ export default class DataManager {
     } else if (this.lastEditingRow) {
       this.lastEditingRow.tableData.editing = undefined;
       this.lastEditingRow = undefined;
+      this.setHasAnyEditingRow(false);
     }
   }
 
