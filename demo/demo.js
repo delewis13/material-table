@@ -1,9 +1,8 @@
-import { Grid, MuiThemeProvider, Button } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import MaterialTable from "../src";
-import Typography from "@material-ui/core/Typography";
 
 let direction = "ltr";
 // direction = 'rtl';
@@ -26,60 +25,73 @@ const defaultHiddenWhileEditing = {
   number: true,
 };
 
+const categories = ["a", "b", "c"];
+
+const mockData = [
+  {
+    select: "key1",
+    text: "my text",
+    number: 1,
+    lookupField: categories[0],
+  },
+  {
+    select: "key2",
+    text: "other text",
+    number: 2,
+    lookupField: categories[1],
+  },
+  {
+    select: "key3",
+    text: "3",
+    number: 3,
+    lookupField: categories[1],
+  },
+  {
+    select: "key4",
+    text: "4",
+    number: 4,
+    lookupField: categories[1],
+  },
+  {
+    select: "key5",
+    text: "5",
+    number: 5,
+    lookupField: categories[1],
+  },
+  {
+    select: "key6",
+    text: "6",
+    number: 6,
+    lookupField: categories[1],
+  },
+  {
+    select: "key7",
+    text: "7",
+    number: 7,
+    lookupField: categories[1],
+  },
+];
+
 const App = () => {
   const [hiddenColumns, setHiddenColumns] = useState(defaultHidden);
-  const [state, setState] = useState(false);
-  const categories = ["a", "b", "c"];
-
-  const data = [
-    {
-      select: "key1",
-      text: "my text",
-      number: 1,
-      lookupField: categories[0],
-    },
-    {
-      select: "key2",
-      text: "other text",
-      number: 2,
-      lookupField: categories[1],
-    },
-    {
-      select: "key3",
-      text: "3",
-      number: 3,
-      lookupField: categories[1],
-    },
-    {
-      select: "key4",
-      text: "4",
-      number: 4,
-      lookupField: categories[1],
-    },
-    {
-      select: "key5",
-      text: "5",
-      number: 5,
-      lookupField: categories[1],
-    },
-    {
-      select: "key6",
-      text: "6",
-      number: 6,
-      lookupField: categories[1],
-    },
-    {
-      select: "key7",
-      text: "7",
-      number: 7,
-      lookupField: categories[1],
-    },
-  ];
+  const [rerender, forceReRender] = useState(false);
+  const [data, setData] = useState(mockData);
 
   return (
     <MuiThemeProvider theme={theme}>
       <div style={{ width: "100%" }}>
-        <button onClick={() => setState(!state)}>Hello</button>
+        <button onClick={() => forceReRender(!rerender)}>Re-render</button>
+        <button
+          onClick={() =>
+            setData(
+              mockData
+                .sort(() => (Math.random() > 0.5 ? 1 : -1))
+                .slice(0, Math.floor(Math.random() * mockData.length))
+            )
+          }
+        >
+          Reset data
+        </button>
         <MaterialTable
           options={{
             columnsButton: true,
@@ -141,7 +153,6 @@ const App = () => {
             });
           }}
           data={data}
-          editable={true}
           title="Demo Title"
           editable={{
             onRowAdd: (newData) =>
