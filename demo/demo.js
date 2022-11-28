@@ -1,16 +1,12 @@
-import { MuiThemeProvider } from "@material-ui/core";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@mui/material";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import MaterialTable from "../src";
 
 let direction = "ltr";
 // direction = 'rtl';
-const theme = createMuiTheme({
+const theme = createTheme({
   direction: direction,
-  palette: {
-    type: "light",
-  },
 });
 
 const defaultHidden = {
@@ -78,7 +74,7 @@ const App = () => {
   const [data, setData] = useState(mockData);
 
   return (
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <div style={{ width: "100%" }}>
         <button onClick={() => forceReRender(!rerender)}>Re-render</button>
         <button
@@ -176,7 +172,7 @@ const App = () => {
           }}
         />
       </div>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

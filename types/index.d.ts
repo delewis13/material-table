@@ -1,6 +1,6 @@
 import * as React from "react";
-import { IconProps } from "@material-ui/core/Icon";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { IconProps } from "@mui/core/Icon";
+import SvgIcon from "@mui/core/SvgIcon";
 import { string } from "prop-types";
 import { DropResult, ResponderProvided } from "react-beautiful-dnd";
 
